@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-// #define DEBUG
+#define DEBUG
 
 #define BASE_DATA_SIZE 1024
 
@@ -19,15 +19,6 @@ void interpreter(const char *body){
 
     while(*head != '\0'){
         switch(*head){
-            // characters to be skipped
-            case ' ':
-            case '\r':
-            case '\n':{
-                // idk why
-                head++;
-                break;
-            }
-
             // instructions
             case '>':{
                 data_ptr++;
@@ -42,6 +33,7 @@ void interpreter(const char *body){
                 if(data_ptr == 0){
                     // don't hard error, but just let the user know
                     fprintf(stderr, "[ERROR 0x%04X]: Undefined behavior decrement past 0 of data pointer.\r\n", 0x4032);
+                    break;
                 }
                 data_ptr--;
                 break;
@@ -63,52 +55,47 @@ void interpreter(const char *body){
                 break;
             }
             case '[':{
+                // depth match looping (that was my problem)
                 if(data[data_ptr] == 0){
-                    char *tmp = head;
-                    for(; *tmp != ']' && *tmp != '\0'; tmp++);
-
-                    if(*tmp == '\0'){
-                         fprintf(stderr, "[FATAL 0x%04X]: Unterminated loop.\r\n", 0x5413);
-                         exit(EXIT_FAILURE);
+                    int depth = 1;
+                    while(depth > 0 && *++head != '\0'){
+                        if(*head == '[')
+                            depth++;
+                        else if(*head == ']')
+                            depth--;
                     }
-
-                    head = tmp;
                 }
                 break;
             }
             case ']':{
                 if(data[data_ptr] != 0){
-                    char *tmp = head;
-                    for(; *tmp != '[' && tmp >= body; tmp--);
-
-                    if(tmp < body){
-                        fprintf(stderr, "[FATAL 0x%04X]: Unterminated loop.\r\n", 0x5413);
-                        exit(EXIT_FAILURE);
+                    int depth = 1;
+                    while(depth > 0 && --head >= body){
+                        if(*head == '[')
+                            depth++;
+                        else if(*head == ']')
+                            depth--;
                     }
-
-                    head = tmp;
                 }
                 break;
             }
             default:{
-                fprintf(stderr, "[FATAL 0x%04X]: Unknown instruction '%c' in line: %s", 0x0103, *head, body);
-                exit(EXIT_FAILURE);
+                break;
             }
         }
 
-#ifdef DEBUG
-        fprintf(stderr, "data_ptr: %llu\ndata: ", (long long)data_ptr);
-        for(size_t i = 0; i <= data_ptr; i++){
-            fprintf(stderr, "%d ", data[i]);
-        }
-        puts("");
-#endif
-
         head++;
     }
+    #ifdef DEBUG
+    fprintf(stderr, "data_ptr: %llu\ndata: ", (long long)data_ptr);
+    for(size_t i = 0; i <= data_ptr; i++){
+        fprintf(stderr, "%d ", data[i]);
+    }
+    puts("");
+    #endif
 }
 
-int main(int argc, char *argv){
+int main(int argc, char **argv){
     // there is a file to open
     if(argc > 1){
         // open the file and run the interpreter over the contents
