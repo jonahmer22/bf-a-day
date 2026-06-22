@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define DEBUG
+// #define DEBUG
 
 #define BASE_DATA_SIZE 1024
 
@@ -60,9 +60,13 @@ void interpreter(const char *body){
                     int depth = 1;
                     while(depth > 0 && *++head != '\0'){
                         if(*head == '[')
-                            depth++;
-                        else if(*head == ']')
                             depth--;
+                        else if(*head == ']')
+                            depth++;
+                    }
+                    if(depth != 0){
+                        fprintf(stderr, "[FATAL 0x%04X]: Unmatched '['.\r\n", 0x7043);
+                        exit(EXIT_FAILURE);
                     }
                 }
                 break;
@@ -72,11 +76,17 @@ void interpreter(const char *body){
                     int depth = 1;
                     while(depth > 0 && --head >= body){
                         if(*head == '[')
-                            depth++;
-                        else if(*head == ']')
                             depth--;
+                        else if(*head == ']')
+                            depth++;
                     }
                 }
+
+                if(head < body){
+                    fprintf(stderr, "[FATAL 0x%04X]: Unmatched ']'.\r\n". 0x9343);
+                    exit(EXIT_FAILURE);
+                }
+
                 break;
             }
             default:{
