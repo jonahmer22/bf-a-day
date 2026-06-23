@@ -1,5 +1,10 @@
 # mac
 *.DS_Store
 
+# build stuff
 *.out
 bf
+
+# pytest
+__pycache__
+.pytest_cache
