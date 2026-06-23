@@ -21,6 +21,10 @@ int check_brace_match(char *body){
             enters++;
         if(*temp == ']')
             exits++;
+
+        if((enters - exits) < 0){
+            return -1;
+        }
     }
 
     return (int)(enters - exits);
