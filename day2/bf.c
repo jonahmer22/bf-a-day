@@ -12,13 +12,34 @@ uint8_t *tape = NULL;
 size_t tape_head = 0;
 size_t tape_size = TAPE_BASE;
 
-void interpret(char *body){
-    char *head = body;
+int check_brace_match(char *body){
+    int64_t enters = 0;
+    int64_t exits = 0;
 
-    for(char *temp = head; *temp != '\0'; temp++){
-        // TODO: do loop brace evenness checking
+    for(char *temp = body; *temp != '\0'; temp++){
+        if(*temp == '[')
+            enters++;
+        if(*temp == ']')
+            exits++;
     }
 
+    return (int)(enters - exits);
+}
+
+void interpret(char *body){
+    int offset = check_brace_match(body);
+    if(offset > 0){
+        fprintf(stderr, "[ERROR 0x%04X]:\tUnmatched '[' instruction.\r\n", 0x0863);
+        fflush(stderr);
+        exit(EXIT_FAILURE);
+    }
+    else if(offset < 0){
+        fprintf(stderr, "[ERROR 0x%04X]:\tUnmatched ']' instruction.\r\n", 0x9311);
+        fflush(stderr);
+        exit(EXIT_FAILURE);
+    }
+    
+    char *head = body;
     while(*head != '\0' && head >= body){
         switch(*head){
             case '>':{
@@ -144,6 +165,7 @@ int main(int argc, char **argv){
         char *buff = read_file(argv[1]);
 
         interpret(buff);
+        free(buff);
 
         return EXIT_SUCCESS;
     }
