@@ -1,5 +1,5 @@
 all:
-	gcc-15 -O3 -march=native -funroll-loops -fomit-frame-pointer -fno-stack-protector -ffast-math -o bf bf.c
+	gcc -Wall -Wpedantic ./bf.c -o bf
 
 clean:
 	rm ./bf
