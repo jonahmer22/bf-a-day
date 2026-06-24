@@ -13,6 +13,7 @@ See [LANGUAGES.md](LANGUAGES.md) for the full planned language list.
 | 1   | C        |
 | 2   | C        |
 | 3   | C        |
+| 4   | Python   |
 
 ## Structure
 
@@ -27,7 +28,7 @@ dayN/
 
 ## Tests
 
-Tests are written in pytest and automatically scan any directory matching `day*`, running the full test suite against each day's implementation.
+Tests are written in pytest and automatically scan any directory matching `day*`, running the full test suite against each day's implementation (there may be problems with this and I don't think it works as of right now, but i'll figure something out).
 
 ```sh
 pytest
