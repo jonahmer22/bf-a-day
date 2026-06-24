@@ -1,0 +1,64 @@
+# BF Interpreter: Language Checklist
+
+## Languages
+- [x] C
+- [ ] Python
+- [ ] Lua
+- [ ] Ruby
+- [ ] JavaScript (Node.js)
+- [ ] TypeScript (Node.js)
+- [ ] PHP
+- [ ] Perl
+- [ ] Raku
+- [ ] R
+- [ ] Go
+- [ ] Java
+- [ ] Simula
+- [ ] Kotlin
+- [ ] C#
+- [ ] Smalltalk
+- [ ] Scala
+- [ ] Swift
+- [ ] Dart
+- [ ] Crystal
+- [ ] Nim
+- [ ] V
+- [ ] D
+- [ ] C++
+- [ ] BASIC
+- [ ] ALGOL
+- [ ] Pascal
+- [ ] Fortran
+- [ ] Ada
+- [ ] SQL
+- [ ] Zig
+- [ ] Rust
+- [ ] B
+- [ ] Elixir
+- [ ] Erlang
+- [ ] F#
+- [ ] OCaml
+- [ ] Clojure
+- [ ] Common Lisp
+- [ ] Scheme
+- [ ] Racket
+- [ ] Elm
+- [ ] Haskell
+- [ ] Joy
+- [ ] Factor
+- [ ] Forth
+- [ ] PostScript
+- [ ] Prolog
+- [ ] Tcl
+- [ ] REXX
+- [ ] MUMPS/M
+- [ ] APL
+- [ ] BQN
+- [ ] J
+- [ ] K
+- [ ] COBOL
+- [ ] Assembly (x86-64)
+- [ ] Assembly (RISC-V)
+- [ ] Assembly (Cortex-VM)
+- [ ] FALSE
+- [ ] Brainfuck
