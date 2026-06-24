@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-BF interpreter benchmark — runs mandelbrot.b against every dayN directory.
-Compiles with aggressive flags before timing.
+BF interpreter benchmark — compiles each dayN with aggressive flags and times it.
 
 Usage:
-    python bench.py               # benchmark all days
-    python bench.py day1 day3     # benchmark specific days
+    python3 bench.py                     # tight loop, all days
+    python3 bench.py --mandelbrot        # mandelbrot (I/O suppressed), all days
+    python3 bench.py day1 day3           # specific days
+    python3 bench.py --mandelbrot day2   # flags and days can be combined
 """
 
 import os
@@ -15,8 +16,12 @@ import subprocess
 import time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-BENCH_PROGRAM = os.path.join(ROOT, "tests", "mandelbrot.b")
-RUNS = 3  # average over this many runs
+RUNS = 3
+
+PROGRAMS = {
+    "tight_loop": os.path.join(ROOT, "tests", "tight_loop.b"),
+    "mandelbrot": os.path.join(ROOT, "tests", "mandelbrot.b"),
+}
 
 FAST_FLAGS = [
     "gcc", "-O3", "-march=native",
@@ -42,34 +47,38 @@ def build(day_dir):
     return True
 
 
-def bench_once(binary):
+def bench_once(binary, program):
     start = time.perf_counter()
-    result = subprocess.run([binary, BENCH_PROGRAM], capture_output=True, timeout=120)
+    result = subprocess.run(
+        [binary, program],
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        timeout=120,
+    )
     elapsed = time.perf_counter() - start
     if result.returncode != 0:
         raise RuntimeError(f"interpreter exited {result.returncode}: {result.stderr.decode()[:200]}")
-    return elapsed, result.stdout
+    return elapsed
 
 
-def benchmark(day_dir):
+def benchmark(day_dir, program):
     name = os.path.basename(day_dir)
     binary = os.path.join(day_dir, "bf")
 
     print(f"\n{name}")
-    print(f"  building with fast flags...", end=" ", flush=True)
+    print(f"  building...", end=" ", flush=True)
     if not build(day_dir):
         return
 
     print("ok")
 
     times = []
-    output = None
     for i in range(RUNS):
         print(f"  run {i+1}/{RUNS}...", end=" ", flush=True)
         try:
-            t, out = bench_once(binary)
+            t = bench_once(binary, program)
             times.append(t)
-            output = out
             print(f"{t:.3f}s")
         except subprocess.TimeoutExpired:
             print("TIMEOUT (>120s)")
@@ -81,20 +90,27 @@ def benchmark(day_dir):
     avg = sum(times) / len(times)
     best = min(times)
     print(f"  avg: {avg:.3f}s  best: {best:.3f}s")
-    print(f"  output ({len(output)} bytes): first line = {output.split(b'\\n')[0].decode(errors='replace')!r}")
 
 
 if __name__ == "__main__":
-    if not os.path.exists(BENCH_PROGRAM):
-        print(f"benchmark program not found: {BENCH_PROGRAM}")
+    args = sys.argv[1:]
+
+    mode = "tight_loop"
+    if "--mandelbrot" in args:
+        mode = "mandelbrot"
+        args.remove("--mandelbrot")
+
+    program = PROGRAMS[mode]
+    if not os.path.exists(program):
+        print(f"benchmark program not found: {program}")
         sys.exit(1)
 
-    days = [os.path.join(ROOT, a) for a in sys.argv[1:]] if sys.argv[1:] else find_days()
+    days = [os.path.join(ROOT, a) for a in args] if args else find_days()
 
-    print(f"benchmark: {BENCH_PROGRAM}")
-    print(f"runs per interpreter: {RUNS}")
+    print(f"benchmark : {os.path.basename(program)} (output suppressed)")
+    print(f"runs each : {RUNS}")
 
     for day in days:
-        benchmark(day)
+        benchmark(day, program)
 
     print()

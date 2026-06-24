@@ -149,7 +149,7 @@ void interpret(char *src){
     }
 }
 
-const char *read_file(const char *path){
+char *read_file(const char *path){
     FILE *file = fopen(path, "r");
     if(file == NULL){
         fprintf(stderr, "[FATAL 0x%04X]:\tUnable to open file at path: %s", 0x5238, path);
@@ -164,7 +164,7 @@ const char *read_file(const char *path){
     size_t start = ftell(file);
 
     size_t len = end - start;
-    const char *buff = malloc(sizeof(char) * len);
+    char *buff = malloc(sizeof(char) * len);
     if(buff == NULL){
         fprintf(stderr, "[FATAL 0x%04X]:\tNot enough memory to load file of %zu characters.\r\n", 0x8134, len);
         fflush(stderr);
@@ -189,10 +189,12 @@ int main(int argc, char **argv){
     }
     
     if(argc > 1){
-        const char *buff = read_file(argv[1]);
+        char *buff = read_file(argv[1]);
         
         interpret(buff);
         
+        free(buff);
+
         return EXIT_SUCCESS;
     }
     
@@ -212,6 +214,8 @@ int main(int argc, char **argv){
 
         interpret(line);
     }
+
+    free(tape);
 
     return EXIT_SUCCESS;
 }
