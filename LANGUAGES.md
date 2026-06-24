@@ -1,7 +1,7 @@
 # BF Interpreter: Language Checklist
 
 ## Languages
-- [x] C
+- [x] C (day1-day3)
 - [ ] Python
 - [ ] Lua
 - [ ] Ruby
