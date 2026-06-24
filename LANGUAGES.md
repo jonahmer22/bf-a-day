@@ -2,7 +2,7 @@
 
 ## Languages
 - [x] C (day1-day3)
-- [ ] Python
+- [x] Python
 - [ ] Lua
 - [ ] Ruby
 - [ ] JavaScript (Node.js)
