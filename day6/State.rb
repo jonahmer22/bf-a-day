@@ -12,9 +12,9 @@ class Tape
     def head_inc
         @head += 1
 
-        if @head > @tape.length
+        if @head >= @tape.length
             old_size = @size
-            for i in 0..@size+1
+            for i in 0..@size
                 @tape.push(0)
             end
             @size *= 2
