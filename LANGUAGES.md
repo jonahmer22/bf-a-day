@@ -4,7 +4,7 @@
 - [x] C (day1-day3)
 - [x] Python
 - [x] Lua
-- [ ] Ruby
+- [x] Ruby
 - [ ] JavaScript (Node.js)
 - [ ] TypeScript (Node.js)
 - [ ] PHP

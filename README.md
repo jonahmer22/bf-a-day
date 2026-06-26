@@ -15,6 +15,7 @@ See [LANGUAGES.md](LANGUAGES.md) for the full planned language list.
 | 3   | C        |
 | 4   | Python   |
 | 5   | Lua      |
+| 6   | Ruby     |
 
 ## Structure
 
