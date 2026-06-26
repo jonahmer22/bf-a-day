@@ -3,7 +3,7 @@
 ## Languages
 - [x] C (day1-day3)
 - [x] Python
-- [ ] Lua
+- [x] Lua
 - [ ] Ruby
 - [ ] JavaScript (Node.js)
 - [ ] TypeScript (Node.js)
