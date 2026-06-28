@@ -145,8 +145,12 @@ function interpreter(src){
 }
 
 function main(){
+    // init the tape
+    for(let i = 0; i < tape_size; i++)
+        tape.push(0)
+    
     const args = process.argv
-    if(args.length > 1){
+    if(args.length > 2){
         let src = fread(args[2])
 
         // print(src)
@@ -155,10 +159,6 @@ function main(){
 
         return
     }
-
-    // init the tape
-    for(let i = 0; i < tape_size; i++)
-        tape.push(0)
 
     // repl
     print("BrainFuck Interpreter\n\nType 'bye' to exit.\n");
