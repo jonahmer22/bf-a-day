@@ -5,7 +5,7 @@
 - [x] Python
 - [x] Lua
 - [x] Ruby
-- [ ] JavaScript (Node.js)
+- [x] JavaScript (Node.js)
 - [ ] TypeScript (Node.js)
 - [ ] PHP
 - [ ] Perl
