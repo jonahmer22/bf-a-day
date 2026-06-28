@@ -57,8 +57,8 @@
 - [ ] J
 - [ ] K
 - [ ] COBOL
+- [ ] Assembly (Cortex-VM)
 - [ ] Assembly (x86-64)
 - [ ] Assembly (RISC-V)
-- [ ] Assembly (Cortex-VM)
 - [ ] FALSE
 - [ ] Brainfuck
